@@ -102,9 +102,9 @@ def main():
     set_seed(args.seed)
 
     # ---- data ----
-    train_df = pd.read_csv("labels_train_clean.csv")
-    val_df = pd.read_csv("data2/labels_val.csv")
-    data_store = FounderDataStore("data2")
+    train_df = pd.read_csv("data/labels_train_clean.csv")
+    val_df = pd.read_csv("data/labels_val.csv")
+    data_store = FounderDataStore("data")
 
     # ---- model ----
     clf = Classifier(STATE_DIM).to(DEVICE)

@@ -12,9 +12,9 @@ from data_store import FounderDataStore
 from get_observation import FounderState
 
 # ------------------ Config ------------------
-DATA_DIR = "data2"
-TRAIN_LABELS = "data2/labels_train.csv"
-OUT_CLEAN_TRAIN = "labels_train_clean.csv"
+DATA_DIR = "data"
+TRAIN_LABELS = "data/labels_train.csv"
+OUT_CLEAN_TRAIN = "data/labels_train_clean.csv"
 OUT_FIG = "cluster_vis.png"
 
 N_CLUSTERS = 8

@@ -1,4 +1,3 @@
-
 from data_store import FounderDataStore
 from get_observation import FounderState
 from Networks import PolicyNet, Classifier
@@ -18,13 +17,11 @@ import torch
 from policy_diagnostics import PolicyDiagnostics
 
 
-
 # ------------------ Config ------------------
 STATE_DIM = 1543
 N_INFO_ACTIONS = 5
 ACTION_DIM = N_INFO_ACTIONS + 1  # infos + stop
 DEVICE = torch.device("cuda")
-
 
 
 def set_seed(seed: int):
@@ -97,6 +94,7 @@ def stratified_split(df: pd.DataFrame, label_col: str, val_ratio: float, seed: i
     val_df = pd.concat(parts_val, ignore_index=True).sample(frac=1, random_state=seed).reset_index(drop=True)
     test_df = pd.concat(parts_test, ignore_index=True).sample(frac=1, random_state=seed + 1).reset_index(drop=True)
     return val_df, test_df
+
 
 def eval_and_print_TP(
     test_df,
@@ -194,9 +192,9 @@ def main():
     set_seed(seed)
 
     # ---- data ----
-    train_df = pd.read_csv("labels_train_clean.csv")
-    holdout_df = pd.read_csv("data2/labels_val.csv")  # 你说的“原本测试集”
-    data_store = FounderDataStore(data_dir="data2")
+    train_df = pd.read_csv("data/labels_train_clean.csv")
+    holdout_df = pd.read_csv("data/labels_val.csv")  # 你说的“原本测试集”
+    data_store = FounderDataStore(data_dir="data")
 
     # 把 holdout 拆成 validation / test（比例保持不变）
     val_df, test_df = stratified_split(holdout_df, label_col="success", val_ratio=args.val_ratio, seed=seed)
@@ -226,7 +224,7 @@ def main():
     POLICY_SAMPLE = 2000
     CLF_SAMPLE = 4000
 
-    POLICY_BATCH = 512 # 128
+    POLICY_BATCH = 128 # 128
     CLF_BATCH = 512
     EPOCHS_PER_UPDATE = 1
 
@@ -235,7 +233,7 @@ def main():
 
     REPLAY_MAX_FINAL = 20000
     FINAL_SAMPLE = 0
-    USE_LLM = 1
+    USE_LLM = 0
     # --------------------------------
 
     config = {
@@ -290,7 +288,7 @@ def main():
         neg_df = neg_all.sample(n=n_neg, replace=False, random_state=seed + 1).reset_index(drop=True)
 
     # ---- training ----
-    FOUNDER_EPOCHS = 2
+    FOUNDER_EPOCHS = 1
     global_step = 0
 
     # ====== NEW: freeze classifier at early stage ======
@@ -349,7 +347,7 @@ def main():
                 max_steps=FAST_MAX_STEPS,
                 max_depth=FAST_MAX_DEPTH,
                 n_rollouts=FAST_N_ROLLOUTS,
-                eps=0.1
+                eps=0.1, USE_LLM = USE_LLM,
             )
 
             final_x = rollout_final_state(
@@ -464,13 +462,14 @@ def main():
         config=config,
     )
 
-    diag.save(
-        "policy_metrics_with_llm.jsonl" if USE_LLM
-        else "policy_metrics_no_llm.jsonl"
-    )
+    # diag.save(
+    #     "policy_metrics_with_llm.jsonl" if USE_LLM
+    #     else "policy_metrics_no_llm.jsonl"
+    # )
 
 
 if __name__ == "__main__":
     main()
+
 # python train.py --n_success_train 100 --n_fail_train 500 --val_ratio 0.5 --eval_every 5
 # python train.py  --val_ratio 0.5 --eval_every 5

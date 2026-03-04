@@ -146,9 +146,9 @@ def parse_args():
                    help="path to trained checkpoint (.pt)")
 
     # 数据
-    p.add_argument("--labels_pool", type=str, default="data2/labels_val.csv",
+    p.add_argument("--labels_pool", type=str, default="data/labels_val.csv",
                    help="CSV containing founder_uuid + success (holdout pool)")
-    p.add_argument("--data_dir", type=str, default="data2",
+    p.add_argument("--data_dir", type=str, default="data",
                    help="data directory for FounderDataStore")
 
     # test set 构造
@@ -159,7 +159,7 @@ def parse_args():
                    help="list of seeds for test set sampling")
 
     # 输出
-    p.add_argument("--out_csv", type=str, default="multi_test_results2.csv")
+    p.add_argument("--out_csv", type=str, default="multi_test_results.csv")
 
     return p.parse_args()
 
@@ -265,3 +265,5 @@ if __name__ == "__main__":
 
 # python run_multi_seeds.py --ckpt runs/model_llm_supervisor/final_model.pt --test_seeds 0 1 2 3 4 5 6 7 8 9
 # python run_multi_seeds.py --ckpt runs/model_without_llm/final_model.pt --test_seeds 0 1 2 3 4 5 6 7 8 9
+# python run_multi_seeds.py --ckpt runs/model_baseline2_myopic_RL/final_model.pt --test_seeds 0 1 2 3 4 5 6 7 8 9
+# python run_multi_seeds.py --ckpt runs/model_llm_supervisor_2/final_model.pt --test_seeds 0 1 2 3 4 5 6 7 8 9

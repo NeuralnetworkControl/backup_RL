@@ -1,120 +1,152 @@
-# Reinforcement Learning for Adaptive Information Acquisition in Founder Success Prediction
+# 🔍 Founder Success Predictor --- Adaptive RL Policy with LLM Supervision
 
-This project implements a reinforcement learning framework for
-sequential information acquisition in founder success prediction.
-
-Instead of observing all features at once, an agent adaptively queries
-information slots (education, roles, executive signals, industry, etc.)
-and decides when to stop, balancing predictive accuracy and information
-cost.
+An adaptive information-gathering system that predicts startup founder
+success using a learned policy network guided by Monte Carlo tree search
+and optional LLM supervision. Instead of consuming all features upfront,
+the agent dynamically decides which information to query next and stops
+once sufficient signal is collected.
 
 ------------------------------------------------------------------------
 
-## Overview
+## 🧠 How It Works
 
-Traditional prediction models assume full feature availability.\
-In practice, information is often incomplete and costly to obtain.
+The system formulates founder evaluation as a sequential decision
+problem:
 
-We model founder prediction as a sequential decision process:
-
--   The agent starts with no information.
--   It can query one information slot at a time.
--   After each query, it may query another slot or stop and make a
-    prediction.
--   Rewards depend on prediction correctness and query cost.
-
-The objective is to learn a policy that maximizes reward while
-minimizing unnecessary information acquisition.
+1.  A **PolicyNet** observes a partially revealed founder state and
+    selects the next information slot to query (or STOP).
+2.  A **Classifier** predicts success probability based on the
+    accumulated state.
+3.  **Monte Carlo Tree Search (Tree_value_map)** estimates Q-values for
+    possible actions and provides soft targets for policy learning.
+4.  An optional **LLM supervisor** provides weak action preferences when
+    the policy is uncertain.
 
 ------------------------------------------------------------------------
 
-## Information Slots
+## 📁 Repository Structure
 
--   edu -- Education background\
--   role -- Professional roles and job titles\
--   exec -- Executive or leadership signals\
--   industry -- Industry exposure\
--   depth -- Experience depth and seniority
-
-------------------------------------------------------------------------
-
-## Project Structure
-
--   data_store.py\
--   get_observation.py\
--   Tree_value_map.py\
--   main_loop.py\
--   network_trainers.py\
--   Networks.py\
--   train.py\
--   pretrain_classifier.py\
--   cluster_and_clean_train_set.py\
--   llm_next_action_supervisor.py\
--   policy_diagnostics.py\
--   plots_policy_states.py\
--   run_multi_seeds.py
+    ├── main_loop.py
+    ├── Networks.py
+    ├── network_trainers.py
+    ├── Tree_value_map.py
+    ├── get_observation.py
+    ├── data_store.py
+    ├── train.py
+    ├── pretrain_classifier.py
+    ├── Cluster_and_clean_train_set.py
+    ├── run_multi_seeds.py
+    ├── llm_next_action_supervisor.py
+    ├── label.py
+    ├── policy_diagnostics.py
+    ├── plots_policy_states.py
 
 ------------------------------------------------------------------------
 
-## Data Format
+## 🗂 Data Details
 
-data2/\
-founder_index.csv\
-founder_edu_state.npy\
-founder_role_vecs.npy\
-founder_exec_vecs.npy\
-founder_industry_vecs.npy\
-founder_depth_feats.npy\
-labels_train.csv\
-labels_val.csv
+In the `data/` directory:
 
-------------------------------------------------------------------------
+-   The `.npy` files are feature vectors embedded from the full
+    (private) dataset.\
+-   `labels_train.csv` and `labels_val.csv` are the training and
+    validation splits.\
+-   `labels_train_clean.csv` is the cleaned training set after
+    clustering-based outlier removal.
 
-## Training
-
-Clean training data:
-
-    python cluster_and_clean_train_set.py
-
-Pretrain classifier:
-
-    python pretrain_classifier.py --epochs 10
-
-Train RL policy:
-
-    python train.py --n_success_train 500 --n_fail_train 5000 --val_ratio 0.5
-
-Checkpoints, logs, and metrics are automatically saved to:
-
-    runs/YYYYMMDD_HHMMSS/
+⚠️ The complete dataset used to generate embeddings is private and
+cannot be publicly released.
 
 ------------------------------------------------------------------------
 
-## Multi-Seed Testing
+## 🧠 About `train.py` and LLM Supervision
 
-To evaluate robustness across different test splits:
+In `train.py`, you can toggle:
 
-    python run_multi_seeds.py         --ckpt runs/.../latest.pt         --labels_pool data2/labels_val.csv         --n_success 90         --n_fail 910         --test_seeds 1 2 3 4 5 6 7 8 9 10
+``` python
+USE_LLM = True / False
+```
 
-Outputs:
+### ✅ Training Without LLM (Fully Reproducible)
 
--   multi_test_results.csv\
--   decision_paths_last_seed.json
+``` bash
+python train.py
+```
+
+This trains a pure RL decision model using only embedded feature
+vectors.\
+Fully reproducible.
+
+### ⚠️ Training With LLM Supervisor
+
+The LLM supervisor requires original textual background information as
+observed input.
+
+Because the full dataset is private, exact reproduction of the
+LLM-supervised training setting in the paper is not possible.
 
 ------------------------------------------------------------------------
 
-## Experimental Results
+## 🧪 Using Public Data to Try LLM Supervision
 
-All experiment artifacts are stored in the `runs/` directory.
+To experiment with LLM supervision:
 
-Each run folder contains:
+1.  Use the provided public dataset: `vcbench_final_public`
+2.  Generate embedding vectors from it.
+3.  When calling `llm_next_action_supervisor`, provide:
+    -   The original textual information
+    -   The corresponding embedded vectors for RL training
 
--   Model checkpoints (`.pt` files)
--   Configuration file (`config.json`)
--   Training logs
--   Validation metrics
--   Policy diagnostics (entropy, KL)
--   Replay buffer statistics (if enabled)
+This enables a partially reproducible LLM-supervised setup.
 
-This structure ensures full reproducibility of experiments and easy
-comparison across different training settings and random seeds.
+------------------------------------------------------------------------
+
+## 🧪 Reproducing Experimental Results
+
+The `runs/` directory contains saved experiment checkpoints, including:
+
+-   `model_llm_supervisor/`
+-   `model_without_llm/`
+
+To reproduce reported results:
+
+``` bash
+python run_multi_seeds.py \
+  --ckpt runs/model_llm_supervisor/final_model.pt \
+  --test_seeds 0 1 2 3 4 5 6 7 8 9
+```
+
+This outputs evaluation performance and generates:
+
+    decision_paths_last_seed.json
+
+which records decision-making chains for the final seed.
+
+------------------------------------------------------------------------
+
+## 📊 Visualization
+
+Run:
+
+``` bash
+python plots_policy_states.py
+```
+
+This generates entropy and policy activity comparison plots (LLM vs
+non-LLM).
+
+------------------------------------------------------------------------
+
+## 📦 Dependencies
+
+    torch
+    numpy
+    pandas
+    scikit-learn
+    matplotlib
+
+------------------------------------------------------------------------
+
+## 📄 License
+
+MIT

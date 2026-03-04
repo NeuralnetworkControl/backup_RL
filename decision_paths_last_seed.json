@@ -1,0 +1,420 @@
+[
+  {
+    "fid": "3a00a588-68b8-4847-8490-9af99ee22ad6",
+    "true_label": 1,
+    "pred": 1,
+    "prob": 0.40325209498405457,
+    "actions": [
+      "edu",
+      "role",
+      "exec",
+      "industry",
+      "depth"
+    ]
+  },
+  {
+    "fid": "f814aeba-fb35-4514-9fa1-fc106b7c2d50",
+    "true_label": 1,
+    "pred": 1,
+    "prob": 0.7141862511634827,
+    "actions": [
+      "edu",
+      "role",
+      "exec",
+      "industry",
+      "depth"
+    ]
+  },
+  {
+    "fid": "2a2c1638-fe74-401a-8263-dc91386888cc",
+    "true_label": 1,
+    "pred": 1,
+    "prob": 0.39331895112991333,
+    "actions": [
+      "edu",
+      "role",
+      "stop"
+    ]
+  },
+  {
+    "fid": "1838862e-b98b-4f39-b280-628348e9546e",
+    "true_label": 1,
+    "pred": 1,
+    "prob": 0.3456288278102875,
+    "actions": [
+      "edu",
+      "role",
+      "exec",
+      "industry",
+      "depth"
+    ]
+  },
+  {
+    "fid": "35a36606-61e8-4d55-b66e-39207e3e699d",
+    "true_label": 1,
+    "pred": 1,
+    "prob": 0.7739928364753723,
+    "actions": [
+      "edu",
+      "role",
+      "exec",
+      "industry",
+      "depth"
+    ]
+  },
+  {
+    "fid": "870f0466-3b64-474f-80bb-8510fb4dc5e9",
+    "true_label": 1,
+    "pred": 1,
+    "prob": 0.5726439952850342,
+    "actions": [
+      "edu",
+      "role",
+      "exec",
+      "exec",
+      "exec"
+    ]
+  },
+  {
+    "fid": "5385f6df-bdaf-4490-bc2a-c58b37d856fe",
+    "true_label": 1,
+    "pred": 1,
+    "prob": 0.5516796708106995,
+    "actions": [
+      "edu",
+      "role",
+      "industry",
+      "depth",
+      "stop"
+    ]
+  },
+  {
+    "fid": "7e296815-d235-4ba1-82bd-889bcb41eb45",
+    "true_label": 1,
+    "pred": 1,
+    "prob": 0.41763198375701904,
+    "actions": [
+      "edu",
+      "role",
+      "exec",
+      "stop"
+    ]
+  },
+  {
+    "fid": "811f0a21-c68f-4028-a8d0-bb40b53b1a9e",
+    "true_label": 1,
+    "pred": 1,
+    "prob": 0.43684086203575134,
+    "actions": [
+      "edu",
+      "role",
+      "exec",
+      "stop"
+    ]
+  },
+  {
+    "fid": "fcced3f2-2ae4-4382-ba2e-a52dd59f3ba1",
+    "true_label": 1,
+    "pred": 1,
+    "prob": 0.38773685693740845,
+    "actions": [
+      "edu",
+      "role",
+      "exec",
+      "industry",
+      "depth"
+    ]
+  },
+  {
+    "fid": "55b13c2c-28db-4ce6-acea-1fae6e95d7aa",
+    "true_label": 1,
+    "pred": 1,
+    "prob": 0.5918715000152588,
+    "actions": [
+      "edu",
+      "role",
+      "industry",
+      "depth",
+      "stop"
+    ]
+  },
+  {
+    "fid": "f2c60458-490b-417e-b30a-fc0e272269b4",
+    "true_label": 1,
+    "pred": 1,
+    "prob": 0.36240464448928833,
+    "actions": [
+      "edu",
+      "role",
+      "exec",
+      "stop"
+    ]
+  },
+  {
+    "fid": "e85e4e23-7b17-4d58-a8b6-65c51358b807",
+    "true_label": 1,
+    "pred": 1,
+    "prob": 0.41713789105415344,
+    "actions": [
+      "edu",
+      "role",
+      "industry",
+      "depth",
+      "stop"
+    ]
+  },
+  {
+    "fid": "b888c03e-be3d-43b0-b149-add9c57b447a",
+    "true_label": 1,
+    "pred": 1,
+    "prob": 0.39838817715644836,
+    "actions": [
+      "edu",
+      "role",
+      "exec",
+      "stop"
+    ]
+  },
+  {
+    "fid": "0d77f709-2762-4a01-9742-5d3da2d558e7",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.13272680342197418,
+    "actions": [
+      "edu",
+      "role",
+      "exec",
+      "industry",
+      "depth"
+    ]
+  },
+  {
+    "fid": "3cd45977-7465-47f5-bdaf-4d68950d390a",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.06834273040294647,
+    "actions": [
+      "edu",
+      "role",
+      "exec",
+      "stop"
+    ]
+  },
+  {
+    "fid": "7333961e-771a-4977-89f3-c41984812fa2",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.0605253204703331,
+    "actions": [
+      "edu",
+      "role",
+      "stop"
+    ]
+  },
+  {
+    "fid": "3d9c4202-20d1-471c-aa2c-b3878afd58d2",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.15771789848804474,
+    "actions": [
+      "edu",
+      "role",
+      "exec",
+      "industry",
+      "depth"
+    ]
+  },
+  {
+    "fid": "2321f56c-e2eb-4d34-b6a7-af8ce5e61125",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.15846946835517883,
+    "actions": [
+      "edu",
+      "role",
+      "industry",
+      "depth",
+      "stop"
+    ]
+  },
+  {
+    "fid": "88fa20b6-5f1a-4d12-98eb-4828ecfe228b",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.026221133768558502,
+    "actions": [
+      "edu",
+      "role",
+      "stop"
+    ]
+  },
+  {
+    "fid": "7482907f-08e9-467d-bc0f-d710c9835cde",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.06799068301916122,
+    "actions": [
+      "edu",
+      "edu",
+      "edu",
+      "edu",
+      "edu"
+    ]
+  },
+  {
+    "fid": "5607dcef-89cf-4774-bd6e-a1b31c6bb48a",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.006017840001732111,
+    "actions": [
+      "edu",
+      "role",
+      "stop"
+    ]
+  },
+  {
+    "fid": "481ffe9d-911b-4e77-84ba-b5297bcc918b",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.020909668877720833,
+    "actions": [
+      "edu",
+      "role",
+      "industry",
+      "stop"
+    ]
+  },
+  {
+    "fid": "fa23fb37-d37b-4712-9544-6bacb792df8a",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.023517964407801628,
+    "actions": [
+      "edu",
+      "role",
+      "stop"
+    ]
+  },
+  {
+    "fid": "2c8a2115-99a9-4fbb-aa28-54c8e0ca01db",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.08073344826698303,
+    "actions": [
+      "edu",
+      "role",
+      "industry",
+      "depth",
+      "stop"
+    ]
+  },
+  {
+    "fid": "4fdfdf07-db54-448a-a9f9-bf609d0777f1",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.018001696094870567,
+    "actions": [
+      "edu",
+      "role",
+      "exec",
+      "stop"
+    ]
+  },
+  {
+    "fid": "44e4abd1-88c1-469b-bd8e-861ba583ade9",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.0310258436948061,
+    "actions": [
+      "edu",
+      "role",
+      "stop"
+    ]
+  },
+  {
+    "fid": "182c9eef-5eb5-4263-b3b2-744cc5000168",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.1782357543706894,
+    "actions": [
+      "edu",
+      "role",
+      "industry",
+      "depth",
+      "depth"
+    ]
+  },
+  {
+    "fid": "fa9f7b8f-9eff-48bb-aa08-6a5420a59a81",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.011903232894837856,
+    "actions": [
+      "edu",
+      "role",
+      "industry",
+      "stop"
+    ]
+  },
+  {
+    "fid": "564a5f7d-49cb-431f-8677-99436df47570",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.006478192750364542,
+    "actions": [
+      "edu",
+      "role",
+      "industry",
+      "stop"
+    ]
+  },
+  {
+    "fid": "3ece167a-6991-4f5f-9940-620d7caf3a86",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.012062612920999527,
+    "actions": [
+      "edu",
+      "role",
+      "industry",
+      "stop"
+    ]
+  },
+  {
+    "fid": "bae299d7-48c1-4dd3-958d-7ba22e37f2b2",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.10877428948879242,
+    "actions": [
+      "edu",
+      "role",
+      "exec",
+      "stop"
+    ]
+  },
+  {
+    "fid": "180a0429-3f97-4c1b-b111-a62d27b52bc4",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.04433175176382065,
+    "actions": [
+      "edu",
+      "role",
+      "exec",
+      "stop"
+    ]
+  },
+  {
+    "fid": "ceb954cb-304f-479d-b086-83a33654ed98",
+    "true_label": 0,
+    "pred": 0,
+    "prob": 0.051123470067977905,
+    "actions": [
+      "edu",
+      "role",
+      "industry",
+      "depth",
+      "stop"
+    ]
+  }
+]

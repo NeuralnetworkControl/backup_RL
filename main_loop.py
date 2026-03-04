@@ -11,8 +11,8 @@ INFO_MAP = {0: "edu", 1: "role", 2: "exec", 3: "industry", 4: "depth"}
 N_INFO_ACTIONS = len(INFO_MAP)
 STOP_ACTION = N_INFO_ACTIONS  # 5
 # ========== LLM next-action 相关 ==========
-LLM_BIAS = 0.1        # 对 info action 的弱偏好（0.2~0.5）
-UNCERTAIN_DELTA = 0.2  # top-2 概率差阈值
+LLM_BIAS = 0.3        # 对 info action 的弱偏好（0.2~0.5）
+UNCERTAIN_DELTA = 0.05  # top-2 概率差阈值
 LLM_CACHE = {}          # key: mask tuple, value: prefer list
 # =========================================
 
@@ -25,7 +25,9 @@ def get_new_state(
     *,
     fid,
     actions_taken,
-    merged_csv_path="merged.csv",
+    USE_LLM,
+    merged_csv_path="merged.csv",   # This is our private dataset, LLM need the raw data instead of the embedded data.
+                        # if you want to activate the llm_supervisor, you need to use vcbench_final_public.csv instead.
 ):
     """
     - policy 负责给出基础 π
@@ -51,7 +53,7 @@ def get_new_state(
     uncertain = (pi_info[order[0]] - pi_info[order[1]]) < UNCERTAIN_DELTA
 
     # ---------- 仅在犹豫时调用 LLM ----------
-    if uncertain:
+    if uncertain and USE_LLM:
         # mask 作为 cache key（只决定是否查过）
         mask = tuple(int(state_obj.observed.get(s, 0)) for s in INFO_MAP.values())
 
@@ -97,8 +99,6 @@ def get_new_state(
         raise ValueError(f"Invalid action dim: {action_dim}")
 
     return state_obj, stop_flag, action_dim, action_name
-
-
 
 
 def compute_tree_targets(
@@ -161,7 +161,7 @@ def compute_tree_targets(
 
 # max_steps=10, max_depth=6,
 def main_loop(fid, data_store, policy, clf, label, device,
-              max_steps, max_depth, n_rollouts, eps):
+              max_steps, max_depth, n_rollouts, eps, USE_LLM):
     state_obj = FounderState(fid, data_store)
     S_Pai_V = []
     S_Labels = []
@@ -175,7 +175,7 @@ def main_loop(fid, data_store, policy, clf, label, device,
             eps=eps,
             fid=fid,
             actions_taken=actions_taken,
-            merged_csv_path="merged.csv",
+            USE_LLM = USE_LLM,
         )
 
         actions_taken.append({"step": step, "action_dim": a_dim, "action": a_name})
@@ -195,10 +195,10 @@ def main_loop(fid, data_store, policy, clf, label, device,
 
 
 def loop_per_founder(fid, label, data_store, policy, clf, device,
-                     max_steps, max_depth, n_rollouts, eps):
+                     max_steps, max_depth, n_rollouts, eps, USE_LLM):
     return main_loop(
         fid, data_store, policy, clf, label, device,
-        max_steps=max_steps, max_depth=max_depth, n_rollouts=n_rollouts, eps=eps
+        max_steps=max_steps, max_depth=max_depth, n_rollouts=n_rollouts, eps=eps, USE_LLM=USE_LLM
     )
 
 

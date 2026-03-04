@@ -1,7 +1,7 @@
 import pandas as pd
 
-RAW_DATA = "merged.csv"
-OUT_LABELS = "data2/labels.csv"
+RAW_DATA = "merged.csv"  # merged.csv is our private data, u can use vcbench_final_public to substitute
+OUT_LABELS = "data/labels.csv"
 
 # 读取原始数据
 df = pd.read_csv(RAW_DATA)

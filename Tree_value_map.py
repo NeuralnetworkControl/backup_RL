@@ -3,7 +3,7 @@ import numpy as np
 import torch
 
 INFO_MAP = {0: "edu", 1: "role", 2: "exec", 3: "industry", 4: "depth"}
-STEP_PENALTY = -0.05
+STEP_PENALTY = -0.1
 REPEAT_PENALTY = -5  # 你可以调大/调小，比如 -0.2、-0.5、-2
 
 
@@ -30,7 +30,7 @@ def get_state(state_obj, action_dim):
 
 def get_reward(state_obj, Classifier, label, device):
     """终止时 reward：Classifier 吃 torch tensor，输出 logits -> sigmoid -> 0/1。"""
-    REWARDS = {"TP": 10, "FP": -15, "TN": 2, "FN": -5}
+    REWARDS = {"TP": 4, "FP": -16, "TN": 0, "FN": -0.25}
 
     state_vec = state_obj.get_state_vector()
     x = torch.from_numpy(state_vec).float().to(device)
