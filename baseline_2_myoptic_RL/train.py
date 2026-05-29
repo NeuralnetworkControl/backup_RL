@@ -475,4 +475,3 @@ if __name__ == "__main__":
 # python train.py --n_success_train 270 --n_fail_train 2730 --val_ratio 0.5 --eval_every 5
 # python train.py  --val_ratio 0.5 --eval_every 5
 # python train.py --n_success_train 270 --n_fail_train 2730 --val_ratio 0.5 --eval_every 5 --seed 123
-# set OPENAI_API_KEY=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
