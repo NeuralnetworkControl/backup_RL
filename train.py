@@ -638,4 +638,3 @@ if __name__ == "__main__":
 
 # python train.py --n_success_train 100 --n_fail_train 500 --cv_folds 5 --cv_fold 0 --eval_every 5
 # python train.py --cv_folds 5 --cv_fold 0 --eval_every 5 --test_eval_every 5 --policy_lr 5e-5 --clf_lr 1e-5 --freeze_clf_updates 10 --founder_epochs 3
-# set OPENAI_API_KEY=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
