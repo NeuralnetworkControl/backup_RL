@@ -134,7 +134,7 @@ def _build_prompt(fid: str, actions_taken, merged_csv_path: str) -> str:
 You are a decision support module for an information-gathering agent.
 
 Your task:
-Choose which ONE OR TWO remaining information slots are MOST likely
+Choose the ONE remaining information slot that is MOST likely
 to change the final success/failure decision.
 
 Already observed slots:
@@ -168,7 +168,8 @@ Available slots (choose ONLY from these):
 Rules:
 - Do NOT suggest slots already observed.
 - Prefer slots with the highest marginal information value.
-- If nothing stands out, return an empty list.
+- Return at most one slot as a weak reference answer.
+- If nothing stands out clearly, return an empty list.
 - Return structured output only (no explanations).
 
 """.strip()
@@ -189,7 +190,7 @@ def llm_prefer_next_actions_from_merged(
     if not api_key:
         return []
 
-    model = os.getenv("OPENAI_MODEL", "gpt-5.2")
+    model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
     base_url = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1").rstrip("/")
     url = f"{base_url}/responses"
 
@@ -204,7 +205,7 @@ def llm_prefer_next_actions_from_merged(
                 "prefer": {
                     "type": "array",
                     "items": {"type": "string", "enum": INFO_SLOTS},
-                    "maxItems": 2,
+                    "maxItems": 1,
                 }
             },
             "required": ["prefer"],
@@ -229,7 +230,7 @@ def llm_prefer_next_actions_from_merged(
                                 "type": "string",
                                 "enum": INFO_SLOTS
                             },
-                            "maxItems": 2
+                            "maxItems": 1
                         }
                     },
                     "required": ["prefer"],

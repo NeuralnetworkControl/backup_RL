@@ -11,9 +11,9 @@ INFO_MAP = {0: "edu", 1: "role", 2: "exec", 3: "industry", 4: "depth"}
 N_INFO_ACTIONS = len(INFO_MAP)
 STOP_ACTION = N_INFO_ACTIONS  # 5
 # ========== LLM next-action 相关 ==========
-LLM_BIAS = 0.3        # 对 info action 的弱偏好（0.2~0.5）
-UNCERTAIN_DELTA = 0.05  # top-2 概率差阈值
-LLM_CACHE = {}          # key: mask tuple, value: prefer list
+LLM_BIAS = 0.05       # small tie-break bias for info actions
+UNCERTAIN_DELTA = 0.01  # top-2 概率差阈值
+LLM_CACHE = {}          # key: (merged_csv_path, fid, mask tuple), value: prefer list
 # =========================================
 
 
@@ -54,32 +54,36 @@ def get_new_state(
 
     # ---------- 仅在犹豫时调用 LLM ----------
     if uncertain and USE_LLM:
-        # mask 作为 cache key（只决定是否查过）
+        # Cache must be profile-specific. The same observed mask can need
+        # different next actions for different founders or source files.
         mask = tuple(int(state_obj.observed.get(s, 0)) for s in INFO_MAP.values())
+        cache_key = (merged_csv_path, fid, mask)
 
-        if mask in LLM_CACHE:
-            prefer = LLM_CACHE[mask]
+        if cache_key in LLM_CACHE:
+            prefer = LLM_CACHE[cache_key]
         else:
             prefer = llm_prefer_next_actions_from_merged(
                 fid=fid,
                 actions_taken=actions_taken,
                 merged_csv_path=merged_csv_path,
             )
-            LLM_CACHE[mask] = prefer
+            LLM_CACHE[cache_key] = prefer
 
-        # 对 LLM 提出的 slot 加“很小”的 bias
+        # 对 LLM 提出的 slot 加很小的 bias，只在 info actions 内部重分配概率。
+        # Keep the original stop probability unchanged, so LLM only suggests
+        # what to ask next and does not implicitly change when to stop.
+        info_mass = float(pi_info.sum())
         for k, slot in INFO_MAP.items():
             if slot in prefer:
                 pi_info[k] += LLM_BIAS
 
-        # 重新归一化 info action
+        # 重新归一化 info action while preserving the original info-vs-stop mass.
         pi_info = np.clip(pi_info, 1e-8, None)
-        pi_info = pi_info / pi_info.sum()
+        pi_info = pi_info / pi_info.sum() * info_mass
 
         # 拼回完整 π（stop 不动）
         pi[:N_INFO_ACTIONS] = pi_info
         pi[STOP_ACTION] = pi_stop
-        pi = pi / pi.sum()
 
     # ---------- epsilon-greedy 选动作 ----------
     if np.random.rand() < eps:
@@ -318,6 +322,7 @@ def eval_on_val(val_df, data_store, policy, clf, device,
     fnr = fn / (fn + tp + 1e-9)
 
     total_info_used = sum(info_counts)
+    avg_step = total_info_used / max(len(info_counts), 1)
 
     return {
         "tp": tp, "fp": fp, "tn": tn, "fn": fn,
@@ -325,6 +330,7 @@ def eval_on_val(val_df, data_store, policy, clf, device,
         "recall": recall,
         "f0.5": f05,
         "accuracy": acc,
+        "avg_step": avg_step,
         "total_info_used": total_info_used,       # ⭐ 新增
         "info_distribution": info_counts,
         "action_usage": action_counter,   # ⭐ 每种 action 用了多少 founder

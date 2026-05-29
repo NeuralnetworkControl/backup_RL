@@ -120,8 +120,8 @@ def main():
     set_seed(SEED)
 
     # ---- data ----
-    full_train_df = pd.read_csv("data/labels_train_clean.csv")
-    test_df = pd.read_csv("data/labels_val.csv")  # 保持和你原来一致
+    full_train_df = pd.read_csv("data/labels_train.csv")
+    test_df = pd.read_csv("data/labels_test.csv")  # 保持和你原来一致
     data_store = FounderDataStore("data")
 
     # ---- split train / val（来自 train.py 的逻辑）----
